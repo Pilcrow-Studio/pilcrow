@@ -1,0 +1,33 @@
+<script setup lang="ts">
+import { components } from "~/slices";
+
+const prismic = usePrismic();
+const { data: page } = await useAsyncData("index", () =>
+  prismic.client.getByUID("page", "home")
+);
+
+const { ssrContext } = useNuxtApp();
+
+if (ssrContext && ssrContext.res) {
+  // Tag with front page ID
+  if (page.value?.id) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (ssrContext.res as any).setHeader(
+      "Netlify-Cache-Tag",
+      `front-page-${page.value.id}`
+    );
+  }
+}
+
+useHead({
+  title: prismic.asText(page.value?.data.title),
+});
+</script>
+
+<template>
+  <SliceZone
+    wrapper="main"
+    :slices="page?.data.slices ?? []"
+    :components="components"
+  />
+</template>

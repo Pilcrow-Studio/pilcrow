@@ -1,0 +1,7 @@
+{
+  "libraries": ["./app/slices"],
+  "repositoryName": "pilcrow-template",
+  "adapter": "@slicemachine/adapter-nuxt",
+  "localSliceSimulatorURL": "http://localhost:3000/slice-simulator",
+  "apiEndpoint": "https://pilcrow-template.prismic.io/api/v2"
+}
