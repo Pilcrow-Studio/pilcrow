@@ -2,22 +2,108 @@
 
 import type * as prismic from "@prismicio/client";
 
-type Simplify<T> = {
-  [KeyType in keyof T]: T[KeyType];
-};
-/** Content for Page documents */
+type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
+
+type PickContentRelationshipFieldData<
+  TRelationship extends
+    | prismic.CustomTypeModelFetchCustomTypeLevel1
+    | prismic.CustomTypeModelFetchCustomTypeLevel2
+    | prismic.CustomTypeModelFetchGroupLevel1
+    | prismic.CustomTypeModelFetchGroupLevel2,
+  TData extends Record<
+    string,
+    | prismic.AnyRegularField
+    | prismic.GroupField
+    | prismic.NestedGroupField
+    | prismic.SliceZone
+  >,
+  TLang extends string,
+> =
+  // Content relationship fields
+  {
+    [TSubRelationship in Extract<
+      TRelationship["fields"][number],
+      prismic.CustomTypeModelFetchContentRelationshipLevel1
+    > as TSubRelationship["id"]]: ContentRelationshipFieldWithData<
+      TSubRelationship["customtypes"],
+      TLang
+    >;
+  } & // Group
+  {
+    [TGroup in Extract<
+      TRelationship["fields"][number],
+      | prismic.CustomTypeModelFetchGroupLevel1
+      | prismic.CustomTypeModelFetchGroupLevel2
+    > as TGroup["id"]]: TData[TGroup["id"]] extends prismic.GroupField<
+      infer TGroupData
+    >
+      ? prismic.GroupField<
+          PickContentRelationshipFieldData<TGroup, TGroupData, TLang>
+        >
+      : never;
+  } & // Other fields
+  {
+    [TFieldKey in Extract<
+      TRelationship["fields"][number],
+      string
+    >]: TFieldKey extends keyof TData ? TData[TFieldKey] : never;
+  };
+
+type ContentRelationshipFieldWithData<
+  TCustomType extends
+    | readonly (prismic.CustomTypeModelFetchCustomTypeLevel1 | string)[]
+    | readonly (prismic.CustomTypeModelFetchCustomTypeLevel2 | string)[],
+  TLang extends string = string,
+> = {
+  [ID in Exclude<
+    TCustomType[number],
+    string
+  >["id"]]: prismic.ContentRelationshipField<
+    ID,
+    TLang,
+    PickContentRelationshipFieldData<
+      Extract<TCustomType[number], { id: ID }>,
+      Extract<prismic.Content.AllDocumentTypes, { type: ID }>["data"],
+      TLang
+    >
+  >;
+}[Exclude<TCustomType[number], string>["id"]];
+
+interface FooterDocumentData {}
+
+/**
+ * Footer document from Prismic
+ *
+ * - **API ID**: `footer`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type FooterDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<FooterDocumentData>,
+    "footer",
+    Lang
+  >;
+
+type PageDocumentDataSlicesSlice = RichTextSlice;
+
+/**
+ * Content for Page documents
+ */
 interface PageDocumentData {
   /**
    * Title field in *Page*
    *
-   * - **Field Type**: Title
+   * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
    * - **API ID Path**: page.title
    * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
-   *
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
    */
-  title: prismic.TitleField;
+  title: prismic.RichTextField;
+
   /**
    * Slice Zone field in *Page*
    *
@@ -25,91 +111,101 @@ interface PageDocumentData {
    * - **Placeholder**: *None*
    * - **API ID Path**: page.slices[]
    * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/core-concepts/slices
-   *
+   * - **Documentation**: https://prismic.io/docs/slices
    */
   slices: prismic.SliceZone<PageDocumentDataSlicesSlice>;
 }
-/**
- * Slice for *Page → Slice Zone*
- *
- */
-type PageDocumentDataSlicesSlice = RichTextSlice;
+
 /**
  * Page document from Prismic
  *
  * - **API ID**: `page`
  * - **Repeatable**: `true`
- * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ * - **Documentation**: https://prismic.io/docs/content-modeling
  *
  * @typeParam Lang - Language API ID of the document.
  */
 export type PageDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
-export type AllDocumentTypes = PageDocument;
+
+export type AllDocumentTypes = FooterDocument | PageDocument;
+
 /**
- * Primary content in RichText → Primary
- *
+ * Primary content in *RichText → Default → Primary*
  */
-interface RichTextSliceDefaultPrimary {
+export interface RichTextSliceDefaultPrimary {
   /**
-   * Content field in *RichText → Primary*
+   * Content field in *RichText → Default → Primary*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: Lorem ipsum...
-   * - **API ID Path**: rich_text.primary.content
-   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
-   *
+   * - **API ID Path**: rich_text.default.primary.content
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
    */
   content: prismic.RichTextField;
 }
+
 /**
  * Default variation for RichText Slice
  *
  * - **API ID**: `default`
- * - **Description**: `RichText`
- * - **Documentation**: https://prismic.io/docs/core-concepts/reusing-slices
- *
+ * - **Description**: RichText
+ * - **Documentation**: https://prismic.io/docs/slices
  */
 export type RichTextSliceDefault = prismic.SharedSliceVariation<
   "default",
   Simplify<RichTextSliceDefaultPrimary>,
   never
 >;
+
 /**
  * Slice variation for *RichText*
- *
  */
 type RichTextSliceVariation = RichTextSliceDefault;
+
 /**
  * RichText Shared Slice
  *
  * - **API ID**: `rich_text`
- * - **Description**: `RichText`
- * - **Documentation**: https://prismic.io/docs/core-concepts/reusing-slices
- *
+ * - **Description**: RichText
+ * - **Documentation**: https://prismic.io/docs/slices
  */
 export type RichTextSlice = prismic.SharedSlice<
   "rich_text",
   RichTextSliceVariation
 >;
+
 declare module "@prismicio/client" {
   interface CreateClient {
     (
       repositoryNameOrEndpoint: string,
-      options?: prismic.ClientConfig
+      options?: prismic.ClientConfig,
     ): prismic.Client<AllDocumentTypes>;
   }
+
+  interface CreateWriteClient {
+    (
+      repositoryNameOrEndpoint: string,
+      options: prismic.WriteClientConfig,
+    ): prismic.WriteClient<AllDocumentTypes>;
+  }
+
+  interface CreateMigration {
+    (): prismic.Migration<AllDocumentTypes>;
+  }
+
   namespace Content {
     export type {
+      FooterDocument,
+      FooterDocumentData,
+      PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,
-      PageDocument,
       AllDocumentTypes,
-      RichTextSliceDefaultPrimary,
-      RichTextSliceDefault,
-      RichTextSliceVariation,
       RichTextSlice,
+      RichTextSliceDefaultPrimary,
+      RichTextSliceVariation,
+      RichTextSliceDefault,
     };
   }
 }
