@@ -3,5 +3,5 @@
   "repositoryName": "pilcrow",
   "adapter": "@slicemachine/adapter-nuxt",
   "localSliceSimulatorURL": "http://localhost:3000/slice-simulator",
-  "apiEndpoint": "https://pilcrow.prismic.io/api/v2"
+  "apiEndpoint": "https://pilcrow.cdn.prismic.io/api/v2"
 }
