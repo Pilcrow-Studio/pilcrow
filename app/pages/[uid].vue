@@ -20,9 +20,7 @@ if (ssrContext && ssrContext.res) {
   }
 }
 
-useHead({
-  title: prismic.asText(page.value?.data.title),
-});
+useHead({});
 </script>
 
 <template>

@@ -3,6 +3,7 @@ import { repositoryName, apiEndpoint } from "./slicemachine.config.json";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   ssr: true,
 
   experimental: {
@@ -12,9 +13,9 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: "Pilcrow",
+      title: "Pilcrow Digitalstudio",
       htmlAttrs: {
-        lang: "en",
+        lang: "no",
       },
       meta: [
         { charset: "utf-8" },
