@@ -2,4 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-@include font-face(Crozet, "~/assets/fonts/Crozet-Regular", 400, normal, otf);
+.richtext {
+  @apply text-center;
+  h1 {
+    @apply text-3xl mb-4 font-serif;
+  }
+  p {
+    @apply text-[0.9375rem] mb-4;
+  }
+}

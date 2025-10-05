@@ -1,22 +1,20 @@
 <script setup lang="ts">
 import { components } from "~/slices";
+import type { ServerResponse } from "http";
 
 const prismic = usePrismic();
 
 const { data: page } = await useAsyncData("index", () =>
-  prismic.client.getByUID("page", "home")
+  prismic.client.getSingle("home")
 );
 
 const { ssrContext } = useNuxtApp();
 
 if (ssrContext && ssrContext.res) {
+  const res = ssrContext.res as ServerResponse;
   // Tag with front page ID
   if (page.value?.id) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (ssrContext.res as any).setHeader(
-      "Netlify-Cache-Tag",
-      `front-page-${page.value.id}`
-    );
+    res.setHeader("Netlify-Cache-Tag", `front-page-${page.value.id}`);
   }
 }
 
@@ -64,15 +62,19 @@ useHead({
 </script>
 
 <template>
-  <div>
-    <Container>
-      <h1 class="text-4xl font-bold mb-2" :field="page?.data.title">
-        {{ prismic.asText(page?.data.title) }}
-      </h1>
+  <div class="h-screen grid grid-cols-12 grid-rows-4">
+    <Container class="row-start-2 col-start-4 col-span-6">
       <SliceZone
         wrapper="main"
+        class="max-w-prose"
         :slices="page?.data.slices ?? []"
         :components="components"
+      />
+    </Container>
+    <Container class="row-start-4 col-span-12 flex justify-center">
+      <NuxtImg
+        :src="page?.data.logo?.url ?? ''"
+        class="w-full max-w-[900px] object-contain"
       />
     </Container>
   </div>

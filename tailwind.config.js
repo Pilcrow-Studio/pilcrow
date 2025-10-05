@@ -7,11 +7,7 @@ export default {
   ],
   theme: {
     fontFamily: {
-      display: ["Crozet", "sans-serif"],
-      body: ["Inter", "sans-serif"],
-      mono: ["Crozet", "sans-serif"],
-      serif: ["Crozet", "serif"],
-      sans: ["Inter", "sans-serif"],
+      serif: ["Times New Roman", "serif"],
     },
     extend: {},
   },
