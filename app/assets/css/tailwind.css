@@ -4,6 +4,7 @@
 
 .richtext {
   @apply text-center;
+  @apply text-pretty;
   h1 {
     @apply text-3xl mb-4 font-serif;
   }

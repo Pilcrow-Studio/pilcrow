@@ -66,7 +66,7 @@ useHead({
     <Container class="row-start-2 col-start-4 col-span-6">
       <SliceZone
         wrapper="main"
-        class="max-w-prose"
+        class="max-w-[45ch] mx-auto"
         :slices="page?.data.slices ?? []"
         :components="components"
       />
