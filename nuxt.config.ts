@@ -77,8 +77,14 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    // Private keys (only available on server-side)
     prismicWebhookSecret: process.env.PRISMIC_WEBHOOK_SECRET,
     resendApiKey: process.env.RESEND_API_KEY,
+
+    // Public keys (exposed to client-side)
+    public: {
+      // Add any client-side config here if needed
+    },
   },
 
   prismic: {
