@@ -120,8 +120,8 @@ useHead({
 </script>
 
 <template>
-  <div class="h-screen grid grid-cols-1 grid-rows-5 lg:grid-cols-12">
-    <Container class="row-start-2 lg:col-start-4 lg:col-span-6">
+  <div class="md:h-screengrid grid-cols-1 grid-rows-3 lg:grid-cols-12">
+    <Container class="row-start-1 lg:col-start-4 lg:col-span-6">
       <Motion
         :initial="{ y: 10, opacity: 0 }"
         :animate="{ y: 0, opacity: 1 }"
@@ -130,14 +130,14 @@ useHead({
         <NuxtImg
           ref="logoImage"
           :src="page?.data.logo?.url ?? ''"
-          class="mb-24 w-full mx-auto max-w-[200px] object-contain"
+          class="mb-24 mx-auto w-[100px] object-contain"
           :alt="page?.data.logo?.alt ?? ''"
           fetchpriority="high"
           loading="eager"
           format="webp,avif"
           quality="70"
-          width="200"
-          height="200"
+          width="120"
+          height="80"
         />
       </Motion>
       <Motion
@@ -147,14 +147,13 @@ useHead({
       >
         <SliceZone
           ref="mainContent"
-          wrapper="main"
-          class="mx-auto"
+          class="mx-auto max-w-[440px]"
           :slices="page?.data.slices ?? []"
           :components="components"
         />
 
         <form
-          class="mt-24 p-4 lg:p-8 bg-white/10 rounded-sm"
+          class="mt-24 p-4 lg:p-8 bg-white/10 rounded-sm max-w-[640px] mx-auto"
           @submit="handleSubmit"
         >
           <p class="text-white mb-4">Hold deg i loopen</p>
@@ -214,6 +213,18 @@ useHead({
           </button>
         </form>
       </Motion>
+    </Container>
+    <Container>
+      <div
+        class="fixed bg-[#0F1112] bg-opacity-10 backdrop-blur-sm bottom-0 left-0 right-0 px-4 py-2 flex justify-between"
+      >
+        <p class="text-sm text-white/60 font-serif">© 2025 Pilcrow</p>
+        <NuxtLink
+          to="mailto:jonas@pilcrow.no"
+          class="text-sm text-white/60 font-serif hover:text-white transition-all"
+          >jonas@pilcrow.no</NuxtLink
+        >
+      </div>
     </Container>
   </div>
 </template>

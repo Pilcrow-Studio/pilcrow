@@ -69,3 +69,7 @@
     @apply text-[0.9375rem] mb-4;
   }
 }
+
+html {
+  @apply bg-[#0F1112] text-white;
+}
