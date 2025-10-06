@@ -1,10 +1,11 @@
 import { Resend } from "resend";
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
+  // Access environment variable directly to avoid bundling it in the build
+  const resendApiKey = process.env.RESEND_API_KEY;
 
   // Debug: Check if API key is available
-  if (!config.resendApiKey) {
+  if (!resendApiKey) {
     console.error("RESEND_API_KEY is not configured");
     throw createError({
       statusCode: 500,
@@ -12,7 +13,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const resend = new Resend(config.resendApiKey);
+  const resend = new Resend(resendApiKey);
 
   // Only allow POST requests
   if (getMethod(event) !== "POST") {
