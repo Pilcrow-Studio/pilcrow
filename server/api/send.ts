@@ -42,8 +42,8 @@ export default defineEventHandler(async (event) => {
       subject: "Velkommen til vårt nyhetsbrev!",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #333;">Velkommen til vårt nyhetsbrev!</h2>
-          <p>Tusen takk for at du abonnerer. Vi vil holde deg oppdatert med våre siste nyheter og oppdateringer.</p>
+          <h2 style="color: #333;">Tusen takk for at du abonnerer.</h2>
+          <p>Vi vil holde deg oppdatert med våre siste nyheter og oppdateringer.</p>
           <p>Med vennlig hilsen,<br>Jonas i Pilcrow</p>
         </div>
       `,

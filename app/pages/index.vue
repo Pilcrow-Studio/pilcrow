@@ -186,6 +186,19 @@ useHead({
               placeholder="Din e-post"
             />
           </div>
+          <div class="mb-4">
+            <input
+              id="consent"
+              type="checkbox"
+              name="consent"
+              class="mr-2 text-white bg-white/20 border-white/30 rounded focus:ring-white/20 focus:ring-2"
+              required
+            />
+            <label for="consent" class="text-sm/[130%] text-white/60"
+              >Jeg godtar at Pilcrow kan bruke min e-postadresse til å sende meg
+              nyhetsbrev.</label
+            >
+          </div>
 
           <button
             type="submit"
@@ -197,8 +210,6 @@ useHead({
           </button>
         </form>
       </Motion>
-    </Container>
-    <Container class="row-start-5 lg:col-span-12 flex justify-center">
     </Container>
   </div>
 </template>
