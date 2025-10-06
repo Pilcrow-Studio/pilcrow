@@ -36,7 +36,12 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "nuxt-vitalizer",
     "@nuxt/scripts",
+    "motion-v/nuxt",
   ],
+
+  site: {
+    name: "Pilcrow",
+  },
 
   components: true,
 
@@ -73,6 +78,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     prismicWebhookSecret: process.env.PRISMIC_WEBHOOK_SECRET,
+    resendApiKey: process.env.RESEND_API_KEY,
   },
 
   prismic: {

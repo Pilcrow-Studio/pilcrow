@@ -2,9 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Minotaur Sans Lombardic";
+  src: url("~/assets/fonts/MinotaurSansLombardic-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ivar Text";
+  src: url("~/assets/fonts/IvarText-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ivar Text";
+  src: url("~/assets/fonts/IvarText-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lars";
+  src: url("~/assets/fonts/Lars-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lars";
+  src: url("~/assets/fonts/Lars-RegularItalic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lars";
+  src: url("~/assets/fonts/Lars-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lars";
+  src: url("~/assets/fonts/Lars-MediumItalic.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
 .richtext {
   @apply text-center;
   @apply text-pretty;
+
   h1 {
     @apply text-3xl mb-4 font-serif;
   }

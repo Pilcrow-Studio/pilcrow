@@ -7,7 +7,9 @@ export default {
   ],
   theme: {
     fontFamily: {
-      serif: ["Times New Roman", "serif"],
+      display: ["Minotaur Sans Lombardic", "sans-serif"],
+      serif: ["Ivar Text", "serif"],
+      sans: ["Lars", "sans-serif"],
     },
     extend: {},
   },

@@ -1,0 +1,18 @@
+::selection {
+  color: #0f1112; /* Text color */
+  background: #dcd5ea; /* Highlight background */
+  border-radius: 3px;
+  text-shadow: none; /* Remove shadows for clarity */
+}
+::-webkit-selection {
+  /* Safari & Chrome */
+  color: #0f1112;
+  background: #dcd5ea;
+  border-radius: 3px;
+}
+::-moz-selection {
+  /* Firefox */
+  color: #0f1112;
+  background: #dcd5ea;
+  border-radius: 3px;
+}
