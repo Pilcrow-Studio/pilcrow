@@ -23,4 +23,8 @@ defineProps(
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+.richtext {
+  @apply max-w-[440px] mx-auto;
+}
+</style>
