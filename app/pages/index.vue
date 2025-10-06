@@ -134,6 +134,10 @@ useHead({
           :alt="page?.data.logo?.alt ?? ''"
           fetchpriority="high"
           loading="eager"
+          format="webp,avif"
+          quality="70"
+          width="200"
+          height="200"
         />
       </Motion>
       <Motion
