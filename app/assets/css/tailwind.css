@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: "Minotaur Sans Lombardic";
-  src: url("~/assets/fonts/MinotaurSansLombardic-Regular.woff2") format("woff2");
+  src: url("/fonts/MinotaurSansLombardic-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -12,7 +12,7 @@
 
 @font-face {
   font-family: "Ivar Text";
-  src: url("~/assets/fonts/IvarText-Regular.woff2") format("woff2");
+  src: url("/fonts/IvarText-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -20,7 +20,7 @@
 
 @font-face {
   font-family: "Ivar Text";
-  src: url("~/assets/fonts/IvarText-Italic.woff2") format("woff2");
+  src: url("/fonts/IvarText-Italic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -28,7 +28,7 @@
 
 @font-face {
   font-family: "Lars";
-  src: url("~/assets/fonts/Lars-Regular.woff2") format("woff2");
+  src: url("/fonts/Lars-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -36,7 +36,7 @@
 
 @font-face {
   font-family: "Lars";
-  src: url("~/assets/fonts/Lars-RegularItalic.woff2") format("woff2");
+  src: url("/fonts/Lars-RegularItalic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -44,7 +44,7 @@
 
 @font-face {
   font-family: "Lars";
-  src: url("~/assets/fonts/Lars-Medium.woff2") format("woff2");
+  src: url("/fonts/Lars-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -52,7 +52,7 @@
 
 @font-face {
   font-family: "Lars";
-  src: url("~/assets/fonts/Lars-MediumItalic.woff2") format("woff2");
+  src: url("/fonts/Lars-MediumItalic.woff2") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
