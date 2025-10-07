@@ -129,6 +129,7 @@ useHead({
       >
         <NuxtImg
           ref="logoImage"
+          to="/"
           :src="page?.data.logo?.url ?? ''"
           class="mb-24 mx-auto w-[100px] object-contain"
           :alt="page?.data.logo?.alt ?? ''"
@@ -145,14 +146,16 @@ useHead({
         :animate="{ y: 0, opacity: 1 }"
         :transition="{ duration: 0.5, delay: 0.5 }"
       >
-        <SliceZone
-          ref="mainContent"
-          class="mx-auto"
-          :slices="page?.data.slices ?? []"
-          :components="components"
-        />
+        <div class="mx-auto">
+          <SliceZone
+            :slices="page?.data.slices ?? []"
+            :components="components"
+          />
+        </div>
 
         <form
+          name="newsletter"
+          netlify
           class="mt-8 p-4 lg:p-8 bg-white/[0.03] rounded-sm max-w-[640px] mx-auto"
           @submit="handleSubmit"
         >
