@@ -22,21 +22,23 @@ export default defineEventHandler(async (event) => {
     if (netlifyApiToken && netlifySiteId) {
       console.log("Purging Netlify cache via API...");
 
-      const response = await fetch(
-        `https://api.netlify.com/api/v1/sites/${netlifySiteId}/deploys/latest/purge_cache`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${netlifyApiToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`https://api.netlify.com/api/v1/purge`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${netlifyApiToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          site_id: netlifySiteId,
+        }),
+      });
 
       if (!response.ok) {
-        console.error("Failed to purge cache:", await response.text());
+        const errorText = await response.text();
+        console.error("Failed to purge cache:", response.status, errorText);
       } else {
-        console.log("Cache purged successfully via Netlify API");
+        const result = await response.json();
+        console.log("Cache purged successfully via Netlify API:", result);
       }
     } else {
       console.warn(
