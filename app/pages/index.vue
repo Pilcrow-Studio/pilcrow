@@ -12,13 +12,11 @@ const { ssrContext } = useNuxtApp();
 
 if (ssrContext && ssrContext.res) {
   const res = ssrContext.res as ServerResponse;
-
   // Set cache control to allow CDN caching but make it short-lived
   res.setHeader(
     "Cache-Control",
     "public, max-age=0, s-maxage=60, must-revalidate"
   );
-
   // Tag with front page ID for cache purging
   if (page.value?.id) {
     res.setHeader("Netlify-Cache-Tag", `front-page-${page.value.id}`);
