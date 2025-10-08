@@ -69,24 +69,6 @@ type ContentRelationshipFieldWithData<
   >;
 }[Exclude<TCustomType[number], string>["id"]];
 
-interface FooterDocumentData {}
-
-/**
- * Footer document from Prismic
- *
- * - **API ID**: `footer`
- * - **Repeatable**: `false`
- * - **Documentation**: https://prismic.io/docs/content-modeling
- *
- * @typeParam Lang - Language API ID of the document.
- */
-export type FooterDocument<Lang extends string = string> =
-  prismic.PrismicDocumentWithoutUID<
-    Simplify<FooterDocumentData>,
-    "footer",
-    Lang
-  >;
-
 type HomeDocumentDataSlicesSlice = RichTextSlice;
 
 /**
@@ -159,7 +141,7 @@ interface HomeDocumentData {
 export type HomeDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithoutUID<Simplify<HomeDocumentData>, "home", Lang>;
 
-type PageDocumentDataSlicesSlice = RichTextSlice;
+type PageDocumentDataSlicesSlice = SideContentImageSlice | RichTextSlice;
 
 /**
  * Content for Page documents
@@ -231,7 +213,25 @@ interface PageDocumentData {
 export type PageDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-export type AllDocumentTypes = FooterDocument | HomeDocument | PageDocument;
+interface FooterDocumentData {}
+
+/**
+ * Footer document from Prismic
+ *
+ * - **API ID**: `footer`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type FooterDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<FooterDocumentData>,
+    "footer",
+    Lang
+  >;
+
+export type AllDocumentTypes = HomeDocument | PageDocument | FooterDocument;
 
 /**
  * Primary content in *RichText → Default → Primary*
@@ -278,6 +278,123 @@ export type RichTextSlice = prismic.SharedSlice<
   RichTextSliceVariation
 >;
 
+/**
+ * Primary content in *SideContentImage → Content Left, Image Right → Primary*
+ */
+export interface SideContentImageSliceContentLeftImageRightPrimary {
+  /**
+   * Title field in *SideContentImage → Content Left, Image Right → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: side_content_image.content_left_image_right.primary.title
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  title: prismic.RichTextField;
+
+  /**
+   * Description field in *SideContentImage → Content Left, Image Right → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: side_content_image.content_left_image_right.primary.description
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * Image field in *SideContentImage → Content Left, Image Right → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: side_content_image.content_left_image_right.primary.image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * Content Left, Image Right variation for SideContentImage Slice
+ *
+ * - **API ID**: `content_left_image_right`
+ * - **Description**: Displays text content on the left and an image on the right in a two-column layout.
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SideContentImageSliceContentLeftImageRight =
+  prismic.SharedSliceVariation<
+    "content_left_image_right",
+    Simplify<SideContentImageSliceContentLeftImageRightPrimary>,
+    never
+  >;
+
+/**
+ * Primary content in *SideContentImage → Image Left, Content Right → Primary*
+ */
+export interface SideContentImageSliceImageLeftContentRightPrimary {
+  /**
+   * Title field in *SideContentImage → Image Left, Content Right → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: side_content_image.imageLeftContentRight.primary.title
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  title: prismic.RichTextField;
+
+  /**
+   * Description field in *SideContentImage → Image Left, Content Right → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: side_content_image.imageLeftContentRight.primary.description
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * Image field in *SideContentImage → Image Left, Content Right → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: side_content_image.imageLeftContentRight.primary.image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * Image Left, Content Right variation for SideContentImage Slice
+ *
+ * - **API ID**: `imageLeftContentRight`
+ * - **Description**: Displays text content on the left and an image on the right in a two-column layout.
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SideContentImageSliceImageLeftContentRight =
+  prismic.SharedSliceVariation<
+    "imageLeftContentRight",
+    Simplify<SideContentImageSliceImageLeftContentRightPrimary>,
+    never
+  >;
+
+/**
+ * Slice variation for *SideContentImage*
+ */
+type SideContentImageSliceVariation =
+  | SideContentImageSliceContentLeftImageRight
+  | SideContentImageSliceImageLeftContentRight;
+
+/**
+ * SideContentImage Shared Slice
+ *
+ * - **API ID**: `side_content_image`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SideContentImageSlice = prismic.SharedSlice<
+  "side_content_image",
+  SideContentImageSliceVariation
+>;
+
 declare module "@prismicio/client" {
   interface CreateClient {
     (
@@ -299,19 +416,25 @@ declare module "@prismicio/client" {
 
   namespace Content {
     export type {
-      FooterDocument,
-      FooterDocumentData,
       HomeDocument,
       HomeDocumentData,
       HomeDocumentDataSlicesSlice,
       PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,
+      FooterDocument,
+      FooterDocumentData,
       AllDocumentTypes,
       RichTextSlice,
       RichTextSliceDefaultPrimary,
       RichTextSliceVariation,
       RichTextSliceDefault,
+      SideContentImageSlice,
+      SideContentImageSliceContentLeftImageRightPrimary,
+      SideContentImageSliceImageLeftContentRightPrimary,
+      SideContentImageSliceVariation,
+      SideContentImageSliceContentLeftImageRight,
+      SideContentImageSliceImageLeftContentRight,
     };
   }
 }

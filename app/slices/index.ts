@@ -5,4 +5,7 @@ import { defineSliceZoneComponents } from "@prismicio/vue";
 
 export const components = defineSliceZoneComponents({
   rich_text: defineAsyncComponent(() => import("./RichText/index.vue")),
+  side_content_image: defineAsyncComponent(
+    () => import("./SideContentImage/index.vue"),
+  ),
 });

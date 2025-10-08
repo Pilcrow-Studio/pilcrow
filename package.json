@@ -18,11 +18,11 @@
   "devDependencies": {
     "@nuxt/eslint": "^1.5.2",
     "@nuxtjs/prismic": "^4.1.0",
-    "@slicemachine/adapter-nuxt": "^0.3.83",
+    "@slicemachine/adapter-nuxt": "^0.3.84",
     "concurrently": "^9.2.0",
     "eslint": "^9.31.0",
     "nuxt": "^4.0.0",
-    "slice-machine-ui": "^2.18.1"
+    "slice-machine-ui": "^2.18.2"
   },
   "dependencies": {
     "@netlify/functions": "^4.2.5",

@@ -109,4 +109,23 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: "2025-07-16",
+
+  nitro: {
+    preset: "netlify",
+    prerender: {
+      crawlLinks: true,
+      routes: ["/"],
+    },
+  },
+
+  routeRules: {
+    // Homepage - SWR with 60s max age, revalidate in background
+    "/": { swr: 3600 },
+
+    // Dynamic pages - ISR with revalidation
+    "/**": { isr: 3600 },
+
+    // API routes should not be cached
+    "/api/**": { cache: false },
+  },
 });
