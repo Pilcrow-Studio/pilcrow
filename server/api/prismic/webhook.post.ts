@@ -15,40 +15,19 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    // Extract the document ID from the webhook payload
-    const documentId = body.documents?.[0] || body.document?.id;
+    console.log("Prismic webhook received:", JSON.stringify(body, null, 2));
 
-    if (!documentId) {
-      console.log("No document ID found in webhook payload");
-      setResponseStatus(event, 200);
-      return { message: "No document ID found" };
-    }
+    // Purge all ISR caches to force fresh content
+    // This invalidates the entire ISR cache, causing pages to regenerate on next request
+    await purgeCache();
 
-    // Determine the cache tag based on document type
-    const cacheTag = `document-${documentId}`;
-
-    // You can also add specific tags based on document type if needed
-    // if (body.type === "art_piece") {
-    //   cacheTag = `art-piece-${documentId}`;
-    // } else if (body.type === "exhibitions") {
-    //   cacheTag = `exhibition-${documentId}`;
-    // }
-
-    console.log(
-      `Purging cache for document: ${documentId} with tag: ${cacheTag}`
-    );
-
-    // Purge the cache for this specific document
-    await purgeCache({ tags: [cacheTag] });
-
-    // Also purge the homepage cache since it might list this content
-    await purgeCache({ tags: ["homepage"] });
+    console.log("Cache purged successfully");
 
     setResponseStatus(event, 200);
     return {
-      message: "Cache purged successfully",
-      documentId,
-      cacheTag,
+      message:
+        "Cache purged successfully - content will update on next request",
+      timestamp: new Date().toISOString(),
     };
   } catch (error) {
     console.error("Error purging cache:", error);
