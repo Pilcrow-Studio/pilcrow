@@ -37,8 +37,11 @@ export default defineEventHandler(async (event) => {
         const errorText = await response.text();
         console.error("Failed to purge cache:", response.status, errorText);
       } else {
-        const result = await response.json();
-        console.log("Cache purged successfully via Netlify API:", result);
+        const responseText = await response.text();
+        console.log("Cache purged successfully via Netlify API");
+        if (responseText) {
+          console.log("Response:", responseText);
+        }
       }
     } else {
       console.warn(
