@@ -4,15 +4,34 @@ import type { ServerResponse } from "http";
 
 const prismic = usePrismic();
 
-const { data: page } = await useAsyncData("index", () =>
-  prismic.client.getSingle("home")
+const { data: page } = await useAsyncData(
+  `index-${Date.now()}`, // Use timestamp to prevent caching
+  async () => {
+    console.log(
+      "[Homepage] Fetching fresh data from Prismic at",
+      new Date().toISOString()
+    );
+    const result = await prismic.client.getSingle("home");
+    console.log(
+      "[Homepage] Data fetched, last_publication_date:",
+      result.last_publication_date
+    );
+    return result;
+  }
 );
 
 const { ssrContext } = useNuxtApp();
 
 if (ssrContext && ssrContext.res) {
   const res = ssrContext.res as ServerResponse;
-  // Tag with front page ID
+
+  // Set cache control to allow CDN caching but make it short-lived
+  res.setHeader(
+    "Cache-Control",
+    "public, max-age=0, s-maxage=60, must-revalidate"
+  );
+
+  // Tag with front page ID for cache purging
   if (page.value?.id) {
     res.setHeader("Netlify-Cache-Tag", `front-page-${page.value.id}`);
   }
