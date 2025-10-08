@@ -4,18 +4,9 @@ import type { ServerResponse } from "http";
 
 const prismic = usePrismic();
 
-const { data: page } = await useAsyncData("homepage", async () => {
-  console.log(
-    "[Homepage] Fetching fresh data from Prismic at",
-    new Date().toISOString()
-  );
-  const result = await prismic.client.getSingle("home");
-  console.log(
-    "[Homepage] Data fetched, last_publication_date:",
-    result.last_publication_date
-  );
-  return result;
-});
+const { data: page } = await useAsyncData("homepage", () =>
+  prismic.client.getSingle("home")
+);
 
 const { ssrContext } = useNuxtApp();
 
