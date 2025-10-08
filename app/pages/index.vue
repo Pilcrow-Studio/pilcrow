@@ -4,8 +4,10 @@ import type { ServerResponse } from "http";
 
 const prismic = usePrismic();
 
+const nuxtApp = useNuxtApp();
+
 const { data: page } = await useAsyncData(
-  `index-${Date.now()}`, // Use timestamp to prevent caching
+  "homepage",
   async () => {
     console.log(
       "[Homepage] Fetching fresh data from Prismic at",
@@ -17,6 +19,11 @@ const { data: page } = await useAsyncData(
       result.last_publication_date
     );
     return result;
+  },
+  {
+    getCachedData(key) {
+      return nuxtApp.ssrContext ? null : nuxtApp.payload.data[key];
+    },
   }
 );
 
