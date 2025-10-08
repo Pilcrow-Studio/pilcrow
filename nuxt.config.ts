@@ -123,7 +123,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    // API routes should not be cached (must be first!)
+    // API routes should not be cached
     "/api/**": { cache: false },
 
     // Homepage - SWR with 60s max age, revalidate in background
