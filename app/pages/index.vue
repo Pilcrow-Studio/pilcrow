@@ -5,7 +5,13 @@ import type { ServerResponse } from "http";
 const prismic = usePrismic();
 
 const { data: page } = await useAsyncData("homepage", () =>
-  prismic.client.getSingle("home")
+  prismic.client.getSingle("home", {
+    // Add cache-busting to ensure fresh data
+    fetchLinks: [],
+    graphQuery: "",
+    lang: "*",
+    ref: undefined,
+  })
 );
 
 const { ssrContext } = useNuxtApp();
