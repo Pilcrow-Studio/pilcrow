@@ -113,6 +113,9 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: "netlify",
+    output: {
+      publicDir: ".output/public",
+    },
     prerender: {
       crawlLinks: true,
       routes: ["/"],
