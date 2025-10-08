@@ -1,12 +1,2 @@
 [build]
   command = "pnpm run build"
-  publish = ".output/public"
-
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/server"
-  status = 200
-
-[functions]
-  directory = ".netlify/functions-internal"
-  node_bundler = "esbuild"
