@@ -4,28 +4,18 @@ import type { ServerResponse } from "http";
 
 const prismic = usePrismic();
 
-const nuxtApp = useNuxtApp();
-
-const { data: page } = await useAsyncData(
-  "homepage",
-  async () => {
-    console.log(
-      "[Homepage] Fetching fresh data from Prismic at",
-      new Date().toISOString()
-    );
-    const result = await prismic.client.getSingle("home");
-    console.log(
-      "[Homepage] Data fetched, last_publication_date:",
-      result.last_publication_date
-    );
-    return result;
-  },
-  {
-    getCachedData(key) {
-      return nuxtApp.ssrContext ? null : nuxtApp.payload.data[key];
-    },
-  }
-);
+const { data: page } = await useAsyncData("homepage", async () => {
+  console.log(
+    "[Homepage] Fetching fresh data from Prismic at",
+    new Date().toISOString()
+  );
+  const result = await prismic.client.getSingle("home");
+  console.log(
+    "[Homepage] Data fetched, last_publication_date:",
+    result.last_publication_date
+  );
+  return result;
+});
 
 const { ssrContext } = useNuxtApp();
 

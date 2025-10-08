@@ -123,11 +123,11 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    // API routes should not be cached
+    // API routes should not be cached (must be first!)
     "/api/**": { cache: false },
 
-    // Homepage
-    "/": { ssr: true },
+    // Homepage - SSR with no caching
+    "/": { ssr: true, headers: { "Cache-Control": "no-cache" } },
 
     // Dynamic pages - ISR with revalidation
     "/**": { isr: 3600 },
