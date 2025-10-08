@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   ssr: true,
 
   experimental: {
+    appManifest: false,
     viewTransition: false,
     crossOriginPrefetch: true,
   },
@@ -16,6 +17,7 @@ export default defineNuxtConfig({
       name: "page",
       mode: "out-in",
     },
+    buildAssetsDir: "/_nuxt/",
     head: {
       title: "Pilcrow Digitalstudio",
       htmlAttrs: {
