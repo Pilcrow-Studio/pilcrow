@@ -127,7 +127,7 @@ export default defineNuxtConfig({
     "/api/**": { cache: false },
 
     // Homepage - SWR with 60s max age, revalidate in background
-    "/": { swr: 3600 },
+    "/": { swr: 60 },
 
     // Dynamic pages - ISR with revalidation
     "/**": { isr: 3600 },
