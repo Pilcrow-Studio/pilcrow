@@ -1,5 +1,3 @@
-import { purgeCache } from "@netlify/functions";
-
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
@@ -17,23 +15,45 @@ export default defineEventHandler(async (event) => {
   try {
     console.log("Prismic webhook received:", JSON.stringify(body, null, 2));
 
-    // Purge all ISR caches to force fresh content
-    // This invalidates the entire ISR cache, causing pages to regenerate on next request
-    await purgeCache();
+    // Use Netlify's Purge API to clear the cache
+    const netlifyApiToken = process.env.NETLIFY_API_TOKEN;
+    const netlifySiteId = process.env.NETLIFY_SITE_ID;
 
-    console.log("Cache purged successfully");
+    if (netlifyApiToken && netlifySiteId) {
+      console.log("Purging Netlify cache via API...");
+
+      const response = await fetch(
+        `https://api.netlify.com/api/v1/sites/${netlifySiteId}/deploys/latest/purge_cache`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${netlifyApiToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Failed to purge cache:", await response.text());
+      } else {
+        console.log("Cache purged successfully via Netlify API");
+      }
+    } else {
+      console.warn(
+        "NETLIFY_API_TOKEN or NETLIFY_SITE_ID not configured - skipping cache purge"
+      );
+    }
 
     setResponseStatus(event, 200);
     return {
-      message:
-        "Cache purged successfully - content will update on next request",
+      message: "Webhook processed - cache purge initiated",
       timestamp: new Date().toISOString(),
     };
   } catch (error) {
-    console.error("Error purging cache:", error);
+    console.error("Error handling webhook:", error);
     throw createError({
       statusCode: 500,
-      statusMessage: "Failed to purge cache",
+      statusMessage: "Failed to handle webhook",
     });
   }
 });
