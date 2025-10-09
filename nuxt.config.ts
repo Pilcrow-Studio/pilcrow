@@ -41,6 +41,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "nuxt-vitalizer",
     "@nuxt/scripts",
+    "motion-v/nuxt",
   ],
 
   site: {
