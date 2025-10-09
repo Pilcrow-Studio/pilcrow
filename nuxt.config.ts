@@ -119,10 +119,8 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    // API routes should not be cached (must be first!)
+    // API routes should not be cached
     "/api/**": { cache: false },
-
-    // All other routes - no caching for immediate content updates
-    "/**": { ssr: true },
+    "/**": { isr: 60 },
   },
 });

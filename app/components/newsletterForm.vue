@@ -17,12 +17,15 @@ const handleSubmit = async (event: Event) => {
   message.value = "";
 
   try {
-    const response = await $fetch("/api/send", {
-      method: "POST",
-      body: { email: email.value },
-    });
+    const response = await $fetch<{ success: boolean; message: string }>(
+      "/api/send",
+      {
+        method: "POST",
+        body: { email: email.value },
+      }
+    );
 
-    if (response.success) {
+    if (response?.success) {
       showMessage(
         "Tusen takk for at du abonnerer! Vi vil holde deg oppdatert når det skjer noe kult.",
         "success"
