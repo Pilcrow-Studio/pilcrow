@@ -5,13 +5,7 @@ import type { ServerResponse } from "http";
 const prismic = usePrismic();
 
 const { data: page } = await useAsyncData("homepage", () =>
-  prismic.client.getSingle("home", {
-    // Add cache-busting to ensure fresh data
-    fetchLinks: [],
-    graphQuery: "",
-    lang: "*",
-    ref: undefined,
-  })
+  prismic.client.getSingle("home")
 );
 
 const { ssrContext } = useNuxtApp();
@@ -28,64 +22,6 @@ if (ssrContext && ssrContext.res) {
     res.setHeader("Netlify-Cache-Tag", `front-page-${page.value.id}`);
   }
 }
-
-// Form handling
-const email = ref("");
-const isLoading = ref(false);
-const message = ref("");
-const messageType = ref<"success" | "error" | "">("");
-
-const handleSubmit = async (event: Event) => {
-  event.preventDefault();
-
-  if (!email.value) {
-    showMessage("Please enter your email address", "error");
-    return;
-  }
-
-  isLoading.value = true;
-  message.value = "";
-
-  try {
-    const response = await $fetch("/api/send", {
-      method: "POST",
-      body: { email: email.value },
-    });
-
-    if (response.success) {
-      showMessage(
-        "Tusen takk for at du abonnerer! Vi vil holde deg oppdatert når det skjer noe kult.",
-        "success"
-      );
-      email.value = ""; // Clear the form
-    }
-  } catch (error: unknown) {
-    console.error("Signup error:", error);
-    const errorMessage =
-      error &&
-      typeof error === "object" &&
-      "data" in error &&
-      error.data &&
-      typeof error.data === "object" &&
-      "message" in error.data
-        ? (error.data as { message: string }).message
-        : "Noe gikk galt. Prøv igjen.";
-    showMessage(errorMessage, "error");
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const showMessage = (text: string, type: "success" | "error") => {
-  message.value = text;
-  messageType.value = type;
-
-  // Clear message after 5 seconds
-  setTimeout(() => {
-    message.value = "";
-    messageType.value = "";
-  }, 5000);
-};
 
 useHead({
   title: page.value?.data.meta_title,
@@ -150,69 +86,7 @@ useHead({
       <div class="mx-auto">
         <SliceZone :slices="page?.data.slices ?? []" :components="components" />
       </div>
-
-      <form
-        name="newsletter"
-        class="mt-8 p-4 lg:p-8 bg-white/[0.03] rounded-sm max-w-[640px] mx-auto"
-        @submit="handleSubmit"
-      >
-        <p class="text-white mb-4">Hold deg i loopen</p>
-
-        <!-- Success/Error Message -->
-        <div
-          v-if="message"
-          :class="[
-            'mb-4 p-3 rounded-sm text-sm',
-            messageType === 'success'
-              ? 'bg-green-500/20 text-green-300 border border-green-500/30'
-              : 'bg-red-500/20 text-red-300 border border-red-500/30',
-          ]"
-        >
-          {{ message }}
-        </div>
-
-        <div class="mb-4">
-          <label
-            for="email"
-            class="block text-sm/[130%] font-medium text-white mb-2"
-          >
-            E-post
-          </label>
-          <input
-            id="email"
-            v-model="email"
-            type="email"
-            name="email"
-            autocomplete="email"
-            required
-            :disabled="isLoading"
-            class="transition-all text-sm/[130%] block w-full bg-white/20 hover:border-white/40 text-white placeholder-white/70 px-3 py-2 rounded-sm border border-white/20 focus:border-white/40 focus:bg-white/30 focus:outline-none focus:ring-1 focus:ring-white/20 disabled:opacity-50"
-            placeholder="Din e-post"
-          />
-        </div>
-        <div class="mb-4">
-          <input
-            id="consent"
-            type="checkbox"
-            name="consent"
-            class="mr-2 text-white bg-white/20 border-white/30 rounded focus:ring-white/20 focus:ring-2"
-            required
-          />
-          <label for="consent" class="text-sm/[130%] text-white/60"
-            >Jeg godtar at Pilcrow kan bruke min e-postadresse til å sende meg
-            nyhetsbrev.</label
-          >
-        </div>
-
-        <button
-          type="submit"
-          :disabled="isLoading"
-          class="w-full md:w-auto bg-white/80 text-black text-sm px-6 py-2 rounded-sm hover:bg-white/30 focus:outline-none focus:ring-1 focus:ring-white/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          <span v-if="isLoading">2 sek...</span>
-          <span v-else>Abonner</span>
-        </button>
-      </form>
+      <NewsletterForm />
     </Container>
     <Container>
       <div
