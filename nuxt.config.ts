@@ -111,7 +111,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-16",
 
   nitro: {
-    preset: "netlify_edge",
+    preset: "netlify",
     output: {
       publicDir: ".output/public",
     },
