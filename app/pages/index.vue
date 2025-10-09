@@ -8,14 +8,6 @@ const { data: page } = await useAsyncData("homepage", () =>
   prismic.client.getSingle("home")
 );
 
-// Set cache tag for targeted cache purging
-if (import.meta.server) {
-  const event = useRequestEvent();
-  if (event && page.value?.id) {
-    setResponseHeader(event, "Netlify-Cache-Tag", `prismic-${page.value.id}`);
-  }
-}
-
 useHead({
   title: page.value?.data.meta_title,
   meta: [

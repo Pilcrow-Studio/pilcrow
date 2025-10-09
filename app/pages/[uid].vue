@@ -7,14 +7,6 @@ const { data: page } = await useAsyncData(route.params.uid as string, () =>
   prismic.client.getByUID("page", route.params.uid as string)
 );
 
-// Set cache tag for targeted cache purging
-if (import.meta.server) {
-  const event = useRequestEvent();
-  if (event && page.value?.id) {
-    setResponseHeader(event, "Netlify-Cache-Tag", `prismic-${page.value.id}`);
-  }
-}
-
 useHead({});
 </script>
 

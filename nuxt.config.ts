@@ -120,13 +120,8 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    // API routes should not be cached
     "/api/**": { cache: false },
-    // ISR: Pages cached for 1 hour, revalidated in background for 24 hours
-    "/**": {
-      isr: 3600,
-      headers: {
-        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
-      },
-    },
+    "/**": { isr: 300 },
   },
 });
