@@ -77,10 +77,6 @@ export default defineNuxtConfig({
     },
   },
 
-  build: {
-    transpile: ["gsap"],
-  },
-
   runtimeConfig: {
     // Private keys (only available on server-side)
     prismicWebhookSecret: process.env.PRISMIC_WEBHOOK_SECRET,
@@ -105,6 +101,11 @@ export default defineNuxtConfig({
           uid: "home",
           path: "/",
         },
+        {
+          type: "page",
+          uid: "lab",
+          path: "/lab",
+        },
       ],
     },
   },
@@ -119,8 +120,13 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    // API routes should not be cached
     "/api/**": { cache: false },
-    "/**": { isr: 300 },
+    // ISR: Pages cached for 1 hour, revalidated in background for 24 hours
+    "/**": {
+      isr: 3600,
+      headers: {
+        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      },
+    },
   },
 });

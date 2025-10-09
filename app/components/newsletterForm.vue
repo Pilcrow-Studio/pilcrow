@@ -70,17 +70,19 @@ const showMessage = (text: string, type: "success" | "error") => {
     <p class="text-white mb-4">Hold deg i loopen</p>
 
     <!-- Success/Error Message -->
-    <div
-      v-if="message"
-      :class="[
-        'mb-4 p-3 rounded-sm text-sm',
-        messageType === 'success'
-          ? 'bg-green-500/20 text-green-300 border border-green-500/30'
-          : 'bg-red-500/20 text-red-300 border border-red-500/30',
-      ]"
-    >
-      {{ message }}
-    </div>
+    <transition name="fade">
+      <div
+        v-if="message"
+        :class="[
+          'mb-4 p-3 rounded-sm text-sm',
+          messageType === 'success'
+            ? 'bg-green-500/20 text-green-300 border border-green-500/30'
+            : 'bg-red-500/20 text-red-300 border border-red-500/30',
+        ]"
+      >
+        {{ message }}
+      </div>
+    </transition>
 
     <div class="mb-4">
       <label
@@ -125,3 +127,22 @@ const showMessage = (text: string, type: "success" | "error") => {
     </button>
   </form>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-from {
+  transform: translateY(10px);
+}
+.fade-leave-to {
+  transform: translateY(-10px);
+}
+</style>

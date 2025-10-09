@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { components } from "~/slices";
-import type { ServerResponse } from "http";
 import { Motion } from "motion-v";
 
 const prismic = usePrismic();
@@ -9,18 +8,11 @@ const { data: page } = await useAsyncData("homepage", () =>
   prismic.client.getSingle("home")
 );
 
-const { ssrContext } = useNuxtApp();
-
-if (ssrContext && ssrContext.res) {
-  const res = ssrContext.res as ServerResponse;
-  // Set cache control to allow CDN caching but make it short-lived
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=60, stale-while-revalidate=120"
-  );
-  // Tag with front page ID for cache purging
-  if (page.value?.id) {
-    res.setHeader("Netlify-Cache-Tag", `front-page-${page.value.id}`);
+// Set cache tag for targeted cache purging
+if (import.meta.server) {
+  const event = useRequestEvent();
+  if (event && page.value?.id) {
+    setResponseHeader(event, "Netlify-Cache-Tag", `prismic-${page.value.id}`);
   }
 }
 
@@ -68,7 +60,7 @@ useHead({
 </script>
 
 <template>
-  <div class="md:h-screengrid grid-cols-1 grid-rows-3 lg:grid-cols-12">
+  <div class="md:h-screen grid grid-cols-1 grid-rows-3 lg:grid-cols-12">
     <Container class="row-start-1 lg:col-start-4 lg:col-span-6">
       <motion
         :initial="{ opacity: 0, y: 10 }"
