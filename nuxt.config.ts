@@ -112,13 +112,9 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-16",
 
   nitro: {
-    preset: "netlify_edge",
+    preset: "netlify",
     output: {
       publicDir: ".output/public",
-    },
-    prerender: {
-      crawlLinks: true,
-      routes: ["/"],
     },
   },
 
@@ -126,10 +122,7 @@ export default defineNuxtConfig({
     // API routes should not be cached (must be first!)
     "/api/**": { cache: false },
 
-    // Homepage - SWR with short cache time for quick updates
-    "/": { swr: 60 },
-
-    // Dynamic pages - SWR for better cache invalidation
-    "/**": { swr: 300 },
+    // All other routes - no caching for immediate content updates
+    "/**": { ssr: true },
   },
 });
