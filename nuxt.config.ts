@@ -4,12 +4,11 @@ import { repositoryName, apiEndpoint } from "./slicemachine.config.json";
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
-  ssr: true,
-
   experimental: {
     appManifest: false,
     viewTransition: false,
     crossOriginPrefetch: true,
+    payloadExtraction: false,
   },
 
   app: {
