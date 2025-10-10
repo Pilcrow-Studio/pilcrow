@@ -86,10 +86,6 @@ useHead({
         </div>
       </Motion>
     </Container>
-
-    <ClientOnly>
-      <RegenerationTimestamp />
-    </ClientOnly>
   </div>
 </template>
 

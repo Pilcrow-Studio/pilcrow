@@ -29,7 +29,10 @@ export default defineNuxtConfig({
         { name: "description", content: "" },
         { name: "format-detection", content: "telephone=no" },
       ],
-      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.png" }],
+      link: [
+        { rel: "icon", type: "image/x-icon", href: "/favicon.png" },
+        { rel: "dns-prefetch", href: "https://pilcrow.cdn.prismic.io" },
+      ],
     },
   },
 
@@ -147,6 +150,8 @@ export default defineNuxtConfig({
   routeRules: {
     // API routes should not be cached
     "/api/**": { cache: false },
-    "/**": { isr: 3600 },
+    "/": { isr: 3600, swr: 7200 },
+    "/lab": { isr: 3600, swr: 7200 },
+    "/**": { isr: 3600, swr: true },
   },
 });
