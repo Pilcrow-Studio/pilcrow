@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     viewTransition: false,
     crossOriginPrefetch: true,
     payloadExtraction: false,
+    componentIslands: true,
   },
 
   app: {
@@ -114,8 +115,26 @@ export default defineNuxtConfig({
 
   vue: {
     compilerOptions: {
-      isCustomElement: (tag) => tag === "mux-player",
+      // Removed unused mux-player custom element
     },
+  },
+
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Split vendor chunks for better caching
+            "prismic-vendor": ["@prismicio/client", "@prismicio/vue"],
+            motion: ["motion-v"],
+          },
+        },
+      },
+    },
+  },
+
+  build: {
+    transpile: ["motion-v"],
   },
 
   nitro: {

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Motion } from "motion-v";
-
 const prismic = usePrismic();
+const Motion = defineAsyncComponent(() =>
+  import("motion-v").then((m) => m.Motion)
+);
 
 const { data: page } = await useAsyncData("lab", () =>
   prismic.client.getSingle("lab")
@@ -54,38 +55,61 @@ useHead({
   <div>
     <Container class="max-w-[640px]">
       <NuxtLink to="/">Home</NuxtLink>
-      <Motion
-        :initial="{ opacity: 0 }"
-        :animate="{ opacity: 1 }"
-        :transition="{ duration: 1 }"
-      >
-        <PrismicRichText :field="page?.data.title" />
-      </Motion>
+      <ClientOnly>
+        <Motion
+          :initial="{ opacity: 0 }"
+          :animate="{ opacity: 1 }"
+          :transition="{ duration: 1 }"
+        >
+          <PrismicRichText :field="page?.data.title" />
+        </Motion>
 
-      <Motion
-        :initial="{ opacity: 0 }"
-        :animate="{ opacity: 1 }"
-        :transition="{ duration: 0.5, delay: 0.25 }"
-      >
-        <div>
-          <div class="mt-8 bg-gray-800 rounded-sm p-4 h-[800px]">
-            <NuxtImg
-              :src="page?.data.header_image?.url ?? ''"
-              :alt="page?.data.header_image?.alt ?? ''"
-              fetchpriority="high"
-              loading="eager"
-              class="w-full h-full object-cover"
-              width="576"
-              height="768"
-              quality="60"
-              format="avif"
-            />
+        <Motion
+          :initial="{ opacity: 0 }"
+          :animate="{ opacity: 1 }"
+          :transition="{ duration: 0.5, delay: 0.25 }"
+        >
+          <div>
+            <div class="mt-8 bg-gray-800 rounded-sm p-4 h-[800px]">
+              <NuxtImg
+                :src="page?.data.header_image?.url ?? ''"
+                :alt="page?.data.header_image?.alt ?? ''"
+                fetchpriority="high"
+                loading="eager"
+                class="w-full h-full object-cover"
+                width="576"
+                height="768"
+                quality="60"
+                format="avif"
+              />
+            </div>
           </div>
-        </div>
-      </Motion>
+        </Motion>
+
+        <template #fallback>
+          <PrismicRichText :field="page?.data.title" />
+          <div>
+            <div class="mt-8 bg-gray-800 rounded-sm p-4 h-[800px]">
+              <NuxtImg
+                :src="page?.data.header_image?.url ?? ''"
+                :alt="page?.data.header_image?.alt ?? ''"
+                fetchpriority="high"
+                loading="eager"
+                class="w-full h-full object-cover"
+                width="576"
+                height="768"
+                quality="60"
+                format="avif"
+              />
+            </div>
+          </div>
+        </template>
+      </ClientOnly>
     </Container>
 
-    <RegenerationTimestamp />
+    <ClientOnly>
+      <RegenerationTimestamp />
+    </ClientOnly>
   </div>
 </template>
 

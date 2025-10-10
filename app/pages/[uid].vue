@@ -17,6 +17,8 @@ useHead({});
       :slices="page?.data.slices ?? []"
       :components="components"
     />
-    <RegenerationTimestamp />
+    <ClientOnly>
+      <RegenerationTimestamp />
+    </ClientOnly>
   </div>
 </template>
