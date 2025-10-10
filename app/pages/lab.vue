@@ -55,56 +55,36 @@ useHead({
   <div>
     <Container class="max-w-[640px]">
       <NuxtLink to="/">Home</NuxtLink>
-      <ClientOnly>
-        <Motion
-          :initial="{ opacity: 0 }"
-          :animate="{ opacity: 1 }"
-          :transition="{ duration: 1 }"
-        >
-          <PrismicRichText :field="page?.data.title" />
-        </Motion>
 
-        <Motion
-          :initial="{ opacity: 0 }"
-          :animate="{ opacity: 1 }"
-          :transition="{ duration: 0.5, delay: 0.25 }"
-        >
-          <div>
-            <div class="mt-8 bg-gray-800 rounded-sm p-4 h-[800px]">
-              <NuxtImg
-                :src="page?.data.header_image?.url ?? ''"
-                :alt="page?.data.header_image?.alt ?? ''"
-                fetchpriority="high"
-                loading="eager"
-                class="w-full h-full object-cover"
-                width="576"
-                height="768"
-                quality="60"
-                format="avif"
-              />
-            </div>
-          </div>
-        </Motion>
+      <Motion
+        :initial="{ opacity: 0 }"
+        :animate="{ opacity: 1 }"
+        :transition="{ duration: 1 }"
+      >
+        <PrismicRichText :field="page?.data.title" />
+      </Motion>
 
-        <template #fallback>
-          <PrismicRichText :field="page?.data.title" />
-          <div>
-            <div class="mt-8 bg-gray-800 rounded-sm p-4 h-[800px]">
-              <NuxtImg
-                :src="page?.data.header_image?.url ?? ''"
-                :alt="page?.data.header_image?.alt ?? ''"
-                fetchpriority="high"
-                loading="eager"
-                class="w-full h-full object-cover"
-                width="576"
-                height="768"
-                quality="60"
-                format="avif"
-              />
-            </div>
+      <Motion
+        :initial="{ opacity: 0 }"
+        :animate="{ opacity: 1 }"
+        :transition="{ duration: 0.5, delay: 0.25 }"
+      >
+        <div>
+          <div class="mt-8 bg-gray-800 rounded-sm p-4 h-[800px]">
+            <NuxtImg
+              :src="page?.data.header_image?.url ?? ''"
+              :alt="page?.data.header_image?.alt ?? ''"
+              fetchpriority="high"
+              loading="eager"
+              class="w-full h-full object-cover"
+              width="576"
+              height="768"
+              quality="60"
+              format="avif"
+            />
           </div>
-        </template>
-      </ClientOnly>
+        </div>
+      </Motion>
     </Container>
 
     <ClientOnly>

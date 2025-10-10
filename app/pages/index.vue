@@ -56,71 +56,46 @@ useHead({
 <template>
   <div class="h-screen grid grid-cols-1 grid-rows-3 lg:grid-cols-12">
     <Container class="row-start-1 lg:col-start-4 lg:col-span-6">
-      <ClientOnly>
-        <Motion
-          :initial="{ opacity: 0, y: 10 }"
-          :animate="{ opacity: 1, y: 0 }"
-          :transition="{ duration: 0.5 }"
-        >
-          <NuxtImg
-            ref="logoImage"
-            to="/"
-            :src="page?.data.logo?.url ?? ''"
-            class="mb-24 mx-auto w-[100px] object-contain"
-            :alt="page?.data.logo?.alt ?? ''"
-            fetchpriority="high"
-            loading="eager"
-            format="webp,avif"
-            quality="70"
-            width="120"
-            height="80"
+      <Motion
+        :initial="{ opacity: 0, y: 10 }"
+        :animate="{ opacity: 1, y: 0 }"
+        :transition="{ duration: 0.5 }"
+      >
+        <NuxtImg
+          ref="logoImage"
+          to="/"
+          :src="page?.data.logo?.url ?? ''"
+          class="mb-24 mx-auto w-[100px] object-contain"
+          :alt="page?.data.logo?.alt ?? ''"
+          fetchpriority="high"
+          loading="eager"
+          format="webp,avif"
+          quality="70"
+          width="120"
+          height="80"
+        />
+      </Motion>
+
+      <Motion
+        :initial="{ opacity: 0, y: 10 }"
+        :animate="{ opacity: 1, y: 0 }"
+        :transition="{ duration: 0.5, delay: 0.25 }"
+      >
+        <div class="mx-auto">
+          <SliceZone
+            :slices="page?.data.slices ?? []"
+            :components="components"
           />
-        </Motion>
+        </div>
+      </Motion>
 
-        <Motion
-          :initial="{ opacity: 0, y: 10 }"
-          :animate="{ opacity: 1, y: 0 }"
-          :transition="{ duration: 0.5, delay: 0.25 }"
-        >
-          <div class="mx-auto">
-            <SliceZone
-              :slices="page?.data.slices ?? []"
-              :components="components"
-            />
-          </div>
-        </Motion>
-
-        <Motion
-          :initial="{ opacity: 0, y: 10 }"
-          :animate="{ opacity: 1, y: 0 }"
-          :transition="{ duration: 0.5, delay: 0.5 }"
-        >
-          <NewsletterForm />
-        </Motion>
-
-        <template #fallback>
-          <NuxtImg
-            ref="logoImage"
-            to="/"
-            :src="page?.data.logo?.url ?? ''"
-            class="mb-24 mx-auto w-[100px] object-contain"
-            :alt="page?.data.logo?.alt ?? ''"
-            fetchpriority="high"
-            loading="eager"
-            format="webp,avif"
-            quality="70"
-            width="120"
-            height="80"
-          />
-          <div class="mx-auto">
-            <SliceZone
-              :slices="page?.data.slices ?? []"
-              :components="components"
-            />
-          </div>
-          <NewsletterForm />
-        </template>
-      </ClientOnly>
+      <Motion
+        :initial="{ opacity: 0, y: 10 }"
+        :animate="{ opacity: 1, y: 0 }"
+        :transition="{ duration: 0.5, delay: 0.5 }"
+      >
+        <NewsletterForm />
+      </Motion>
     </Container>
 
     <Container>
