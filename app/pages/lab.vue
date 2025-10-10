@@ -59,9 +59,7 @@ useHead({
         :animate="{ opacity: 1 }"
         :transition="{ duration: 1 }"
       >
-        <h1 class="mt-4 text-5xl font-serif">
-          <PrismicRichText :field="page?.data.title" />
-        </h1>
+        <PrismicRichText :field="page?.data.title" />
       </Motion>
 
       <Motion
@@ -79,13 +77,15 @@ useHead({
               class="w-full h-full object-cover"
               width="576"
               height="768"
-              quality="80"
+              quality="60"
               format="avif"
             />
           </div>
         </div>
       </Motion>
     </Container>
+
+    <RegenerationTimestamp />
   </div>
 </template>
 

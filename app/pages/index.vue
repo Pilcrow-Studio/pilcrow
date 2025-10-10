@@ -107,5 +107,7 @@ useHead({
         >
       </div>
     </Container>
+
+    <RegenerationTimestamp />
   </div>
 </template>

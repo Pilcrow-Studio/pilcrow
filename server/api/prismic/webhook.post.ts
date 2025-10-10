@@ -1,3 +1,5 @@
+import * as prismic from "@prismicio/client";
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
@@ -15,44 +17,62 @@ export default defineEventHandler(async (event) => {
   try {
     console.log("Prismic webhook received:", JSON.stringify(body, null, 2));
 
-    // Use Netlify's Purge API to clear the cache
-    const netlifyApiToken = process.env.NETLIFY_API_TOKEN;
-    const netlifySiteId = process.env.NETLIFY_SITE_ID;
+    const routesToRevalidate: string[] = [];
 
-    if (netlifyApiToken && netlifySiteId) {
-      console.log("Purging Netlify cache via API...");
+    // Parse the webhook payload to get updated documents
+    if (
+      body.type === "api-update" &&
+      body.documents &&
+      body.documents.length > 0
+    ) {
+      // Initialize Prismic client to fetch document details
+      const prismicClient = prismic.createClient("pilcrow");
 
-      const response = await fetch(`https://api.netlify.com/api/v1/purge`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${netlifyApiToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          site_id: netlifySiteId,
-        }),
-      });
+      for (const docId of body.documents) {
+        try {
+          // Fetch the document to get its type and UID
+          const doc = await prismicClient.getByID(docId);
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Failed to purge cache:", response.status, errorText);
-      } else {
-        const responseText = await response.text();
-        console.log("Cache purged successfully via Netlify API");
-        if (responseText) {
-          console.log("Response:", responseText);
+          const route = getRouteFromDocument({
+            id: doc.id,
+            type: doc.type,
+            uid: doc.uid ?? undefined,
+            lang: doc.lang,
+          });
+
+          if (route) {
+            routesToRevalidate.push(route);
+            console.log(
+              `Mapped document ${doc.type}:${doc.uid || doc.id} to route: ${route}`
+            );
+          }
+        } catch (docError) {
+          console.error(`Failed to fetch document ${docId}:`, docError);
+          // Continue processing other documents
         }
       }
-    } else {
-      console.warn(
-        "NETLIFY_API_TOKEN or NETLIFY_SITE_ID not configured - skipping cache purge"
-      );
+    }
+
+    // Clear cache and update timestamps for affected routes
+    const purgedRoutes: string[] = [];
+
+    for (const route of routesToRevalidate) {
+      try {
+        await purgeRouteCache(route);
+        await setRegenerationTimestamp(route);
+        purgedRoutes.push(route);
+        console.log(`Cache cleared and timestamp updated for route: ${route}`);
+      } catch (error) {
+        console.error(`Failed to purge cache for route ${route}:`, error);
+      }
     }
 
     setResponseStatus(event, 200);
     return {
-      message: "Webhook processed - cache purge initiated",
+      message: "Webhook processed - on-demand revalidation completed",
       timestamp: new Date().toISOString(),
+      routesRevalidated: purgedRoutes,
+      totalRoutes: purgedRoutes.length,
     };
   } catch (error) {
     console.error("Error handling webhook:", error);

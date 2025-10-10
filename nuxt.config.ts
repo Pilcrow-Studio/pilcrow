@@ -112,6 +112,12 @@ export default defineNuxtConfig({
 
   compatibilityDate: "2025-07-16",
 
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => tag === "mux-player",
+    },
+  },
+
   nitro: {
     preset: "netlify",
     output: {

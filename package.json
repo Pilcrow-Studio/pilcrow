@@ -25,6 +25,7 @@
     "slice-machine-ui": "^2.18.2"
   },
   "dependencies": {
+    "@mux/mux-player": "^3.6.1",
     "@netlify/functions": "^4.2.5",
     "@nuxt/image": "^1.11.0",
     "@nuxt/scripts": "^0.11.13",
