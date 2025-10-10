@@ -13,7 +13,10 @@
     "postinstall": "nuxt prepare",
     "slicemachine": "start-slicemachine",
     "lint": "eslint .",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "clean": "rm -rf .nuxt .output .data node_modules/.cache",
+    "clean:all": "rm -rf .nuxt .output .data node_modules/.cache node_modules && pnpm install",
+    "dev:clean": "pnpm clean && pnpm dev"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.5.2",

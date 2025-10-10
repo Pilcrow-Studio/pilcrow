@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import { components } from "~/slices";
 
-const prismic = usePrismic();
-const Motion = defineAsyncComponent(() =>
-  import("motion-v").then((m) => m.Motion)
-);
-
-const { data: page } = await useAsyncData("homepage", () =>
-  prismic.client.getSingle("home")
-);
+const { data: page } = await useFetch("/api/pages/home", {
+  key: "page-home",
+});
 
 useHead({
   title: page.value?.data.meta_title,

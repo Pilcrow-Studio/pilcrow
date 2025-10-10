@@ -19,7 +19,6 @@ export default defineNuxtConfig({
     },
     buildAssetsDir: "/_nuxt/",
     head: {
-      title: "Pilcrow Digitalstudio",
       htmlAttrs: {
         lang: "no",
       },
@@ -148,8 +147,13 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    // API routes should not be cached
+    // Cached API endpoints for Prismic content
+    "/api/pages/**": { swr: 3600 },
+    // Webhook should not be cached
+    "/api/prismic/**": { cache: false },
+    // Other API routes should not be cached
     "/api/**": { cache: false },
+    // Page routes with ISR
     "/": { isr: 3600, swr: 7200 },
     "/lab": { isr: 3600, swr: 7200 },
     "/**": { isr: 3600, swr: true },

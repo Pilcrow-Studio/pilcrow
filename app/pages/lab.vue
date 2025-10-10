@@ -1,12 +1,9 @@
 <script setup lang="ts">
-const prismic = usePrismic();
-const Motion = defineAsyncComponent(() =>
-  import("motion-v").then((m) => m.Motion)
-);
+import { Motion } from "motion-v";
 
-const { data: page } = await useAsyncData("lab", () =>
-  prismic.client.getSingle("lab")
-);
+const { data: page } = await useFetch("/api/pages/lab", {
+  key: "page-lab",
+});
 
 useHead({
   title: page.value?.data.meta_title,
@@ -55,7 +52,6 @@ useHead({
   <div>
     <Container class="max-w-[640px]">
       <NuxtLink to="/">Home</NuxtLink>
-
       <Motion
         :initial="{ opacity: 0 }"
         :animate="{ opacity: 1 }"

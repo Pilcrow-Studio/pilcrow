@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { components } from "~/slices";
 
-const prismic = usePrismic();
 const route = useRoute();
-const { data: page } = await useAsyncData(route.params.uid as string, () =>
-  prismic.client.getByUID("page", route.params.uid as string)
-);
+const { data: page } = await useFetch(`/api/pages/${route.params.uid}`, {
+  key: `page-${route.params.uid}`,
+});
 
 useHead({});
 </script>
@@ -14,11 +13,8 @@ useHead({});
   <div>
     <SliceZone
       wrapper="main"
-      :slices="page?.data.slices ?? []"
+      :slices="(page?.data?.slices as any) ?? []"
       :components="components"
     />
-    <ClientOnly>
-      <RegenerationTimestamp />
-    </ClientOnly>
   </div>
 </template>

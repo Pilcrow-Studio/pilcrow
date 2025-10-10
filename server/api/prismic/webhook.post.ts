@@ -1,5 +1,14 @@
 import * as prismic from "@prismicio/client";
 
+/**
+ * Convert route path to API cache key
+ */
+function getApiCacheKey(route: string): string {
+  if (route === "/") return "page-home";
+  if (route === "/lab") return "page-lab";
+  return `page-${route.substring(1)}`; // Remove leading slash
+}
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
@@ -59,9 +68,17 @@ export default defineEventHandler(async (event) => {
     for (const route of routesToRevalidate) {
       try {
         await purgeRouteCache(route);
+
+        // Also purge the API endpoint cache
+        const storage = useStorage("cache");
+        const apiCacheKey = getApiCacheKey(route);
+        await storage.removeItem(apiCacheKey);
+
         await setRegenerationTimestamp(route);
         purgedRoutes.push(route);
-        console.log(`Cache cleared and timestamp updated for route: ${route}`);
+        console.log(
+          `Cache cleared for route: ${route} and API key: ${apiCacheKey}`
+        );
       } catch (error) {
         console.error(`Failed to purge cache for route ${route}:`, error);
       }
