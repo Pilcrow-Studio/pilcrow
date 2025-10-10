@@ -52,7 +52,7 @@ useHead({
 </script>
 
 <template>
-  <div class="md:h-screen grid grid-cols-1 grid-rows-3 lg:grid-cols-12">
+  <div class="h-screen grid grid-cols-1 grid-rows-3 lg:grid-cols-12">
     <Container class="row-start-1 lg:col-start-4 lg:col-span-6">
       <motion
         :initial="{ opacity: 0, y: 10 }"
