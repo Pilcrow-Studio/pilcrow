@@ -147,6 +147,6 @@ export default defineNuxtConfig({
   routeRules: {
     // API routes should not be cached
     "/api/**": { cache: false },
-    "/**": { isr: 300 },
+    "/**": { isr: 3600 },
   },
 });

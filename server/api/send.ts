@@ -49,6 +49,10 @@ export default defineEventHandler(async (event) => {
       `,
     });
 
+    if (userError) {
+      console.error("User email error:", userError);
+    }
+
     // Add contact to audience
     const { data: contactData, error: contactError } =
       await resend.contacts.create({
@@ -61,11 +65,10 @@ export default defineEventHandler(async (event) => {
       console.error("Contact creation error:", contactError);
     }
 
-    if (userError) {
-      console.error("User email error:", userError);
-    }
+    // Send notification email to admin (with delay to avoid rate limit)
+    // Resend allows 2 requests per second, so we add a 600ms delay
+    await new Promise((resolve) => setTimeout(resolve, 600));
 
-    // Send notification email to admin
     const { data: adminEmail, error: adminError } = await resend.emails.send({
       from: "Pilcrow <no-reply@news.pilcrow.no>",
       to: ["jonas@pilcrow.no"],
