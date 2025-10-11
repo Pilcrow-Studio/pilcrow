@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Motion } from "motion-v";
+import { components } from "~/slices";
 
 const { data: page } = await useFetch("/api/pages/lab", {
   key: "page-lab",
@@ -82,6 +83,7 @@ useHead({
         </div>
       </Motion>
     </Container>
+    <SliceZone :slices="page?.data.slices ?? []" :components="components" />
   </div>
 </template>
 

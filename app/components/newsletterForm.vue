@@ -108,10 +108,10 @@ const showMessage = (text: string, type: "success" | "error") => {
         id="consent"
         type="checkbox"
         name="consent"
-        class="mr-2 text-white bg-white/20 border-white/30 rounded focus:ring-white/20 focus:ring-2"
+        class="mr-2 mt-2 text-white bg-white/20 border-white/30 rounded focus:ring-white/20 focus:ring-2"
         required
       />
-      <label for="consent" class="text-sm/[130%] text-white/60"
+      <label for="consent" class="text-xs/[130%] text-white/60"
         >Jeg godtar at Pilcrow kan bruke min e-postadresse til å sende meg
         nyhetsbrev.</label
       >
@@ -127,22 +127,3 @@ const showMessage = (text: string, type: "success" | "error") => {
     </button>
   </form>
 </template>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-.fade-enter-from {
-  transform: translateY(10px);
-}
-.fade-leave-to {
-  transform: translateY(-10px);
-}
-</style>

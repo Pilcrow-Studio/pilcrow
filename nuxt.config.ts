@@ -49,6 +49,7 @@ export default defineNuxtConfig({
 
   site: {
     name: "Pilcrow",
+    url: "https://www.pilcrow.no",
   },
 
   components: true,
@@ -154,8 +155,21 @@ export default defineNuxtConfig({
     // Other API routes should not be cached
     "/api/**": { cache: false },
     // Page routes with ISR
-    "/": { isr: 3600, swr: 7200 },
+    "/": { isr: 600, swr: 1200 },
     "/lab": { isr: 3600, swr: 7200 },
-    "/**": { isr: 3600, swr: true },
+    "/**": { isr: 600, swr: true },
+  },
+  hooks: {
+    "pages:extend"(pages) {
+      if (process.env.NODE_ENV === "production") {
+        // Remove slice-simulator page in production
+        const sliceSimIndex = pages.findIndex(
+          (page) => page.path === "/slice-simulator"
+        );
+        if (sliceSimIndex !== -1) {
+          pages.splice(sliceSimIndex, 1);
+        }
+      }
+    },
   },
 });

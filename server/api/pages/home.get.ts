@@ -7,7 +7,7 @@ export default defineCachedEventHandler(
     return await client.getSingle("home");
   },
   {
-    maxAge: 3600, // 1 hour cache
+    maxAge: 600, // 10 minutes cache
     swr: true, // Stale-while-revalidate
     getKey: () => "page-home",
   }

@@ -159,7 +159,7 @@ interface HomeDocumentData {
 export type HomeDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithoutUID<Simplify<HomeDocumentData>, "home", Lang>;
 
-type LabDocumentDataSlicesSlice = never;
+type LabDocumentDataSlicesSlice = SideContentImageSlice;
 
 /**
  * Content for Lab documents

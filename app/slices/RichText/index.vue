@@ -25,4 +25,7 @@ defineProps(
 .richtext {
   @apply max-w-[440px] mx-auto;
 }
+.richtext :deep(p) {
+  @apply text-[#ababab];
+}
 </style>

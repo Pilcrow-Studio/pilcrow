@@ -93,9 +93,9 @@ useHead({
       </Motion>
     </Container>
 
-    <Container>
+    <Container class="pointer-events-none">
       <div
-        class="fixed bg-[#0F1112] bg-opacity-10 backdrop-blur-sm bottom-0 left-0 right-0 px-4 py-2 flex justify-between"
+        class="pointer-events-auto fixed bg-[#0F1112] bg-opacity-10 backdrop-blur-sm bottom-0 left-0 right-0 px-4 py-2 flex justify-between"
       >
         <p class="text-sm text-white/60 font-serif">© 2025 Pilcrow</p>
         <NuxtLink
